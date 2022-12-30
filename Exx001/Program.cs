@@ -25,35 +25,67 @@ string[] CreateArrayOfStrings(string text)
     string tempElement = String.Empty;
     for (int i = 0; i < text.Length; i++)
     {
-        if (text[i] == ';' && !(text[i-1] == ';')) // 2. условие того что текущий символ пробел, а предыдущий не пробел
-        {                                             // это означает что число закончилось на предыдущем шаге
-            lengthArray++;                         // увеличиваем переменную lengthArray на 1,
-                                                    // так как добавился еще один элемент в результирующий массив
-            array[lengthArray-1] = tempElement;  // введем наш полученный элемент в массив
-            tempElement = String.Empty;  // обнулим нашу переменную textNumber, так как в нее теперь будем собирать следующий элемент
-            continue;        // прерываем текущий шаг цикла и переходим на следующий
+        if (text[i] == ';' && !(text[i-1] == ';')) 
+        {                     
+            lengthArray++;
+            array[lengthArray-1] = tempElement;
+            tempElement = String.Empty;
+            continue;        
         }
-        else if (text[i] == ';' && text[i-1] == ';') continue; // 3. условие того что текущий и предыдущий символы - пробелы
-                                          // означает что ввели лишний пробел - ничего не делаем переходим на след. шаг
-        else if (!(text[i] == ';'))     // 4. условие того что текущ символ не пробел
+        else if (text[i] == ';' && text[i-1] == ';')
+            continue; 
+        else if (!(text[i] == ';'))    
         {            
-            tempElement = tempElement + text[i]; // добавляем текущ символ к перем tempElement
-            if (i < text.Length - 1) continue;  // это условие что i не последнее в цикле
+            tempElement = tempElement + text[i]; 
+            if (i < text.Length - 1) continue;  
         }
-        lengthArray++;              // 5. увеличиваем переменную lengthArray на 1,
-                                       // так как добавился еще один элемент в массив
-                                          // актуально для последнего элемента в цикле
-        array[lengthArray-1] = tempElement;  // введем наш полученный элемент в массив
+        lengthArray++;              
+        array[lengthArray-1] = tempElement;
     }
-    string[] array2 = new string[lengthArray]; // введем второй массив для того чтобы в нем бвло правильное количество элементов
-    for (int j = 0; j < lengthArray; j++) // и в цикле присвоим второму массиву все найденные элемнты из начального массива
+    string[] array2 = new string[lengthArray];
+    for (int j = 0; j < lengthArray; j++)
     {
-        array2[j] = array[j]; // "почистим" элементы массива от лишних пробелов
+        array2[j] = array[j];
     }
-    return array2; // функция вернет второй массив
+    return array2;
 }
 
-string[] SelectsElementsLess4(string[] array) // функция которая из массива создает массив, элементы которой по длине меньше 4
+// string[] CreateArrayOfStrings(string text)
+// {
+//     int lengthArray = 0;
+//     string[] array = new string[1000];
+//     string tempElement = String.Empty;
+//     for (int i = 0; i < text.Length; i++)
+//     {
+//         if (text[i] == ';' && !(text[i-1] == ';')) // 2. условие того что текущий символ пробел, а предыдущий не пробел
+//         {                                             // это означает что число закончилось на предыдущем шаге
+//             lengthArray++;                         // увеличиваем переменную lengthArray на 1,
+//                                                     // так как добавился еще один элемент в результирующий массив
+//             array[lengthArray-1] = tempElement;  // введем наш полученный элемент в массив
+//             tempElement = String.Empty;  // обнулим нашу переменную textNumber, так как в нее теперь будем собирать следующий элемент
+//             continue;        // прерываем текущий шаг цикла и переходим на следующий
+//         }
+//         else if (text[i] == ';' && text[i-1] == ';') continue; // 3. условие того что текущий и предыдущий символы - пробелы
+//                                           // означает что ввели лишний пробел - ничего не делаем переходим на след. шаг
+//         else if (!(text[i] == ';'))     // 4. условие того что текущ символ не пробел
+//         {            
+//             tempElement = tempElement + text[i]; // добавляем текущ символ к перем tempElement
+//             if (i < text.Length - 1) continue;  // это условие что i не последнее в цикле
+//         }
+//         lengthArray++;              // 5. увеличиваем переменную lengthArray на 1,
+//                                        // так как добавился еще один элемент в массив
+//                                           // актуально для последнего элемента в цикле
+//         array[lengthArray-1] = tempElement;  // введем наш полученный элемент в массив
+//     }
+//     string[] array2 = new string[lengthArray]; // введем второй массив для того чтобы в нем бвло правильное количество элементов
+//     for (int j = 0; j < lengthArray; j++) // и в цикле присвоим второму массиву все найденные элемнты из начального массива
+//     {
+//         array2[j] = array[j]; // "почистим" элементы массива от лишних пробелов
+//     }
+//     return array2; // функция вернет второй массив
+// }
+
+string[] SelectsElementsLess4(string[] array)                               // функция которая из массива создает массив, элементы которой по длине меньше 4
 {
     string[] array2 = new string[array.Length];
     int k = 0;
