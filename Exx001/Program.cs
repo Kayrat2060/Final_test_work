@@ -1,91 +1,53 @@
-﻿// логика такая - пользователь вводит в консоль сколько угодно символов через точку с запятой (в пределах разумного)
-// программа будет преобразовывать эту строку в массив из отдельных строк
-
-string CleanText(string text)
+﻿string CleanText(string text) // функция которая "чистит текст" от лишних пробелов и удаляет все знаки ";" в конце и в начале строки
 {
     int m = text.Length;
-    for (int i = m-1; i > 0; i--)    
-    {
-        if (text[i] == ' ' && text[i-1] == ' ' )
-        text = text.Remove(i, 1);
-        else if (text[i] == ';' && text[i-1] == ';' )
-        text = text.Remove(i, 1);
+    for (int i = m-1; i > 0; i--) // цикл в обратном порядке, так как после удаления символа 
+    {                             // из строки индекс в следующей итерации не должен повторяться
+        if (text[i] == ' ' && text[i-1] == ' ' ) // условие двойного пробела
+        text = text.Remove(i, 1);                // удаляем лишний пробел
+        else if (text[i] == ';' && text[i-1] == ';' ) // условие двойного знака ";"
+        text = text.Remove(i, 1);                     // удаляем лишний знак ";"
     }
-    text = text.Trim(new char[] { ' ' , ' ' }); 
-    text = text.Replace(" ;", ";");
-    text = text.Replace("; ", ";");
-    text = text.Trim(new char[] { ';' , ';' }); 
+    text = text.Trim(new char[] { ' ' , ' ' });      // эта команда удаляет все пробелы в конце  в начале строки
+    text = text.Replace(" ;", ";");                  // так удаляем еще лишние пробелы
+    text = text.Replace("; ", ";");                  // так удаляем еще лишние пробелы
+    text = text.Trim(new char[] { ';' , ';' });      // эта команда удаляет все знаки ";" в конце  в начале строки
     return text;
 }
 
 string[] CreateArrayOfStrings(string text)
 {
-    int lengthArray = 0;
-    string[] array = new string[1000];
-    string tempElement = String.Empty;
-    for (int i = 0; i < text.Length; i++)
+    int lengthArray = 0;              // переменная для определения размера искомого массива
+    string[] array = new string[1000]; // задаем масси с заведомо огромной длиной, так как не знаем заранее размер полученного массива
+    string tempElement = String.Empty;  // вводим переменную tempElement, в нее будем собирать текущий элемент
+    for (int i = 0; i < text.Length; i++) // перебираем в цикле все символы строки
     {
-        if (text[i] == ';' && !(text[i-1] == ';')) 
+        if (text[i] == ';' && !(text[i-1] == ';')) // это условие того что текущий элемент (строка) закончен
         {                     
             lengthArray++;
-            array[lengthArray-1] = tempElement;
-            tempElement = String.Empty;
+            array[lengthArray-1] = tempElement;  // присваиваем текущий элемент массиву
+            tempElement = String.Empty;           // и обнуляем нашу временную переменную tempElement
             continue;        
         }
-        else if (text[i] == ';' && text[i-1] == ';')
-            continue; 
-        else if (!(text[i] == ';'))    
+        else if (text[i] == ';' && text[i-1] == ';') // условие того что элемент пустой
+            continue;                               // ничего не делаем - переходим на след. шаг
+        else if (!(text[i] == ';'))                // условие того что текущий элемент еще не собран
         {            
-            tempElement = tempElement + text[i]; 
-            if (i < text.Length - 1) continue;  
+            tempElement = tempElement + text[i];   // добавляем текущий символ во временную переменную
+            if (i < text.Length - 1) continue;     // проверяется что сейчас не последний символ в цикле
         }
-        lengthArray++;              
-        array[lengthArray-1] = tempElement;
+        lengthArray++;                             // увеличиваем размерность массива
+        array[lengthArray-1] = tempElement;        // добавляем последний элемент в массив
     }
-    string[] array2 = new string[lengthArray];
-    for (int j = 0; j < lengthArray; j++)
-    {
+    string[] array2 = new string[lengthArray];     // вводим второй массив с правильной длиной
+    for (int j = 0; j < lengthArray; j++)          // для того чтобы ей передать все найденные элементы
+    {                                              // из массива с размером 1000
         array2[j] = array[j];
     }
     return array2;
 }
 
-// string[] CreateArrayOfStrings(string text)
-// {
-//     int lengthArray = 0;
-//     string[] array = new string[1000];
-//     string tempElement = String.Empty;
-//     for (int i = 0; i < text.Length; i++)
-//     {
-//         if (text[i] == ';' && !(text[i-1] == ';')) // 2. условие того что текущий символ пробел, а предыдущий не пробел
-//         {                                             // это означает что число закончилось на предыдущем шаге
-//             lengthArray++;                         // увеличиваем переменную lengthArray на 1,
-//                                                     // так как добавился еще один элемент в результирующий массив
-//             array[lengthArray-1] = tempElement;  // введем наш полученный элемент в массив
-//             tempElement = String.Empty;  // обнулим нашу переменную textNumber, так как в нее теперь будем собирать следующий элемент
-//             continue;        // прерываем текущий шаг цикла и переходим на следующий
-//         }
-//         else if (text[i] == ';' && text[i-1] == ';') continue; // 3. условие того что текущий и предыдущий символы - пробелы
-//                                           // означает что ввели лишний пробел - ничего не делаем переходим на след. шаг
-//         else if (!(text[i] == ';'))     // 4. условие того что текущ символ не пробел
-//         {            
-//             tempElement = tempElement + text[i]; // добавляем текущ символ к перем tempElement
-//             if (i < text.Length - 1) continue;  // это условие что i не последнее в цикле
-//         }
-//         lengthArray++;              // 5. увеличиваем переменную lengthArray на 1,
-//                                        // так как добавился еще один элемент в массив
-//                                           // актуально для последнего элемента в цикле
-//         array[lengthArray-1] = tempElement;  // введем наш полученный элемент в массив
-//     }
-//     string[] array2 = new string[lengthArray]; // введем второй массив для того чтобы в нем бвло правильное количество элементов
-//     for (int j = 0; j < lengthArray; j++) // и в цикле присвоим второму массиву все найденные элемнты из начального массива
-//     {
-//         array2[j] = array[j]; // "почистим" элементы массива от лишних пробелов
-//     }
-//     return array2; // функция вернет второй массив
-// }
-
-string[] SelectsElementsLess4(string[] array)                               // функция которая из массива создает массив, элементы которой по длине меньше 4
+string[] SelectsElementsLess4(string[] array)   // функция которая из массива создает массив, элементы которой по длине меньше 4
 {
     string[] array2 = new string[array.Length];
     int k = 0;
@@ -128,5 +90,5 @@ Console.WriteLine();
 PrintArray(arrayString);  // печатаем полученный массив в консоль
 Console.WriteLine(" -> ");
 string[] arrayWithElementsLess4 = SelectsElementsLess4(arrayString);
-PrintArray(arrayWithElementsLess4); // печатаем резкльтирующий массив в консоль
+PrintArray(arrayWithElementsLess4); // печатаем результирующий массив в консоль
 Console.WriteLine();
